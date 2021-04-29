@@ -24,8 +24,6 @@ class Layer():
         #print(dout.transpose().shape)
         #print(self.other.transpose().shape)
         self.diff_Weights = dout.transpose()@self.other.transpose()
-        
-        
         return dout@self.diff_out
 
 

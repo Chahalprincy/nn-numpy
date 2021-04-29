@@ -1,6 +1,7 @@
 from nn.layers import Layer
 from nn.activations import Relu
 from nn.activations import softmax
+from nn.loss import loss
 
 import numpy as np
 
@@ -17,14 +18,16 @@ out2 = layer2.forward(out1)
 softmax_new = softmax()
 out3 = softmax_new.forward(out2)
 #print(out3)
-L = np.array([[1, 2, 3, 0.5]])
+loss1 = loss()
+L = loss1.forward(2,out3)
+#print(L.shape)
 #print(L.shape)
 back1 = softmax_new.backward(L)
-#print(back1)
+#print(back1.shape)
 back2 = layer2.backward(back1)
-#print(back2)
+#print(back2.shape)
 back3 = Relu_new.backward(back2)
-#print(back3)
+#print(back3.shape)
 back4 = layer1.backward(back3)
-#print(back4)
+#print(back4.shape)
 

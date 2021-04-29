@@ -13,6 +13,7 @@ class Relu():
         d = np.where(self.a1 == 0, 0,1)
         np.fill_diagonal(c,d)
         #print(c.shape)
+        #print(dout)
         return dout@c
 
 class softmax():
@@ -29,8 +30,8 @@ class softmax():
         dia = np.ones(np.shape(self.arr))-((np.ones(np.shape(self.new_arr))/self.new_arr)*self.summ)
         b = self.new_arr @ self.new_arr_T
         np.fill_diagonal(b,dia)
-        #print(b.shape)
-        return dout@b
+        c = (-1/self.summ**2)*(b)
+        return dout.T@c
 
 
 
