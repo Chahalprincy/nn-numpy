@@ -18,8 +18,8 @@ def create_nn_layers():
 
 
 def main():
-    nn_input = np.array([[2,3], [3,4]])
-    y_label = np.array([1,0])
+    nn_input = np.array([[2, 3, 4], [3, 4, 5]])
+    y_label = np.array([2, 0, 1])
     nn_layers = create_nn_layers()
     # forward
     out_layer1 = nn_layers["layer1"].forward(nn_input)
@@ -43,20 +43,18 @@ def main():
     tout_layer1 = tlayer1_w @ t_input + tlayer1_b
     tout_relu1 = torch.clamp(tout_layer1, min=0)
     tout_layer2 = tlayer2_w @ tout_relu1 + tlayer2_b
-    tout_softmax = torch.exp(tout_layer2) / tout_layer2.exp().sum()
-    print(out_softmax1.shape)
-    print(tout_softmax.shape)
-    tloss = -tout_softmax[2, 0] * torch.log(tout_softmax[2, 0])
+    tout_softmax = torch.exp(tout_layer2) / tout_layer2.exp().sum(dim=0)
+    tloss = 0
+
+    for i, ind_y in enumerate(y_label):
+        p = tout_softmax[ind_y, i]
+        tloss += -p * torch.log(p)
     tloss.backward()
 
-    print(out_loss1, tloss.item())
-    print("-" * 50)
+    assert np.allclose(nn_layers["layer2"].diff_Weights, tlayer2_w.grad.numpy()), "incorrect updated weights at layer2"
+    assert np.allclose(nn_layers["layer1"].diff_Weights, tlayer1_w.grad.numpy()), "incorrect updated weights at layer1"
 
-    print(nn_layers["layer2"].diff_Weights)
-    print(tlayer2_w.grad)
-
-    print(np.isclose(nn_layers["layer2"].diff_Weights, tlayer2_w.grad.numpy()))
-    print(np.allclose(nn_layers["layer1"].diff_Weights, tlayer1_w.grad.numpy()))
+    print("net forward, backward is correct")
 
 
 if __name__ == "__main__":

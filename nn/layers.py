@@ -17,14 +17,13 @@ class Layer():
     def backward(self, dout):
         self.diff_out = np.copy(self.Weights)
         
-        self.diff_bias = dout.mean(axis=0).T
+        self.diff_bias = dout.sum(axis=0).T
         
         y = np.reshape(dout,(dout.shape[0],dout.shape[2],1))
         
-        
         a = np.expand_dims(self.other.T, axis=(1))
         
-        self.diff_Weights = (y@a).mean(axis=0) 
+        self.diff_Weights = (y@a).sum(axis=0)
         return dout@self.diff_out
 
     def update(self, y):
