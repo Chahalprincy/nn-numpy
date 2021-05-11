@@ -11,20 +11,26 @@ class Layer():
         self.diff_out = None
 
     def forward(self, other):
-        
-        # print(Weights.shape)
-        # print(bias.shape)
         self.other = other
         return self.Weights@self.other + self.bias
 
     def backward(self, dout):
         self.diff_out = np.copy(self.Weights)
-        #print(self.Weights.shape)
-        self.diff_bias = dout
-        #print(dout.transpose().shape)
-        #print(self.other.transpose().shape)
-        self.diff_Weights = dout.transpose()@self.other.transpose()
+        
+        self.diff_bias = dout.mean(axis=0).T
+        
+        y = np.reshape(dout,(dout.shape[0],dout.shape[2],1))
+        
+        
+        a = np.expand_dims(self.other.T, axis=(1))
+        
+        self.diff_Weights = (y@a).mean(axis=0) 
         return dout@self.diff_out
+
+    def update(self, y):
+        self.Weights = self.Weights - y*self.diff_Weights
+        self.bias = self.bias - y*self.diff_bias
+        
 
 
 

@@ -18,8 +18,8 @@ def create_nn_layers():
 
 
 def main():
-    nn_input = np.array([[2], [3]])
-    y_label = 2
+    nn_input = np.array([[2,3], [3,4]])
+    y_label = np.array([1,0])
     nn_layers = create_nn_layers()
     # forward
     out_layer1 = nn_layers["layer1"].forward(nn_input)
@@ -44,6 +44,8 @@ def main():
     tout_relu1 = torch.clamp(tout_layer1, min=0)
     tout_layer2 = tlayer2_w @ tout_relu1 + tlayer2_b
     tout_softmax = torch.exp(tout_layer2) / tout_layer2.exp().sum()
+    print(out_softmax1.shape)
+    print(tout_softmax.shape)
     tloss = -tout_softmax[2, 0] * torch.log(tout_softmax[2, 0])
     tloss.backward()
 
@@ -54,6 +56,7 @@ def main():
     print(tlayer2_w.grad)
 
     print(np.isclose(nn_layers["layer2"].diff_Weights, tlayer2_w.grad.numpy()))
+    print(np.allclose(nn_layers["layer1"].diff_Weights, tlayer1_w.grad.numpy()))
 
 
 if __name__ == "__main__":
