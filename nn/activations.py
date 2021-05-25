@@ -21,10 +21,8 @@ class softmax():
     def forward(self, arr):
         self.arr = arr
         self.new_arr = np.exp(self.arr)
-        #print("expo expo")
-        #print(self.new_arr)
         self.summ = self.new_arr.sum(axis = 0)
-        return self.new_arr/self.summ
+        return self.new_arr/(self.summ+1e-6)
 
     def backward(self, dout):
         y = np.expand_dims(self.new_arr.T, axis=1)
@@ -34,5 +32,4 @@ class softmax():
         b = self.new_arr2 @ y
         b[:,range(self.new_arr2.shape[1]),range(self.new_arr2.shape[1])] = np.squeeze(dia, axis = 1)
         c = (-1/l**2)*b
-        # print(c)
         return dout@c

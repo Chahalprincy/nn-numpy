@@ -18,8 +18,8 @@ def create_nn_layers():
 
 
 def main():
-    nn_input = np.array([[2, 3, 4], [3, 4, 5]])
-    y_label = np.array([2, 0, 1])
+    nn_input = np.array([[2], [3]])
+    y_label = np.array([2])
     nn_layers = create_nn_layers()
     # forward
     out_layer1 = nn_layers["layer1"].forward(nn_input)

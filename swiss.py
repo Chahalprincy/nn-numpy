@@ -1,0 +1,11 @@
+import numpy as np
+train_features = np.load("/Users/princychahal/Downloads/swiss-roll-data/train_features.npy")
+print(train_features)
+train_labels = np.load("/Users/princychahal/Downloads/swiss-roll-data/train_labels.npy")
+#print("labels")
+#print(train_labels[1:3])
+test_features = np.load("/Users/princychahal/Downloads/swiss-roll-data/test_features.npy")
+#print(test_features)
+test_labels = np.load("/Users/princychahal/Downloads/swiss-roll-data/test_labels.npy")
+#print("labels")
+#print(test_labels)
